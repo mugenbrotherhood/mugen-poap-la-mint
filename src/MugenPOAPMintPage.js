@@ -33,7 +33,9 @@ export default function MugenPOAPMintPage() {
       const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
       const tx = await contract.mint();
       await tx.wait();
-      const uri = await contract.tokenURI(0); // Assumes only one token per wallet
+
+      // Override tokenURI with local path
+      const uri = "/metadata/0.json";
       setTokenURI(uri);
       setHasMinted(true);
       setTxStatus("✅ Mint successful! Here's your POAP:");
@@ -42,8 +44,9 @@ export default function MugenPOAPMintPage() {
       if (err?.reason === "Already claimed") {
         setTxStatus("⚠️ You've already minted this POAP.");
         setHasMinted(true);
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-        const uri = await contract.tokenURI(0);
+
+        // Override tokenURI with local path again
+        const uri = "/metadata/0.json";
         setTokenURI(uri);
       } else if (err?.code === "CALL_EXCEPTION") {
         setTxStatus("❌ Minting failed — check if you're in the allowed window.");
