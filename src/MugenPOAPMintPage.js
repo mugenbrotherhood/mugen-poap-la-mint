@@ -91,17 +91,17 @@ export default function MugenPOAPMintPage() {
           console.error("⚠️ Failed to load:", backgrounds[currentBg]);
         }}
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
+		  position: "absolute",
+		  top: 0,
+		  left: 0,
+		  width: "100%",
+		  height: "100%",
+		  objectFit: "contain",
 		  backgroundColor: "black",
-          zIndex: 0,
-          opacity: 0.6,
-          transition: "opacity 1s ease-in-out"
-        }}
+		  zIndex: 0,
+		  opacity: 0.6,
+		  transition: "opacity 1s ease-in-out"
+		}}
       />
 
       {/* 🎯 Foreground content */}
