@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
 const CONTRACT_ADDRESS = "0x9e1373e7A48b9A9F82380bf9b031A81Cbe8a1865";
@@ -13,10 +13,30 @@ export default function MugenPOAPMintPage() {
   const [txStatus, setTxStatus] = useState("");
   const [tokenURI, setTokenURI] = useState(null);
   const [hasMinted, setHasMinted] = useState(false);
-
-  // ✅ New: preview media
   const [imageURL, setImageURL] = useState(null);
   const [animationURL, setAnimationURL] = useState(null);
+
+  // ✅ Background rotation setup
+  const backgrounds = [
+    "/backgrounds/bg1.jpg",
+    "/backgrounds/bg2.png",
+    "/backgrounds/mugen-crest-anmtn.mp4",
+    "/backgrounds/bg3.jpg",
+    "/backgrounds/mugen-hart-anmtn.mp4"
+  ];
+  const [currentBg, setCurrentBg] = useState(0);
+  const [isVideo, setIsVideo] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % backgrounds.length);
+    }, 7000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    setIsVideo(/\.(mp4|webm|mov)$/i.test(backgrounds[currentBg]));
+  }, [currentBg]);
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -68,9 +88,7 @@ export default function MugenPOAPMintPage() {
   return (
     <div
       style={{
-        backgroundImage: "url('/mugen-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: isVideo ? "black" : `url(${backgrounds[currentBg]}) center/cover no-repeat`,
         minHeight: "100vh",
         padding: "2rem",
         color: "white",
@@ -78,9 +96,36 @@ export default function MugenPOAPMintPage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden"
       }}
     >
+      {/* 🎥 Render video background only when needed */}
+      {isVideo && (
+        <video
+          src={backgrounds[currentBg]}
+          autoPlay
+          muted
+          loop
+          playsInline
+          onError={() => {
+            console.warn("⚠️ Failed to load background video:", backgrounds[currentBg]);
+            setIsVideo(false);
+          }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: -1,
+            opacity: 0.6
+          }}
+        />
+      )}
+
       {!hasMinted ? (
         <>
           <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>Mugen POAP Mint</h1>
