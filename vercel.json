@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/backgrounds/(.*).mp4",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "video/mp4"
+        }
+      ]
+    }
+  ]
+}

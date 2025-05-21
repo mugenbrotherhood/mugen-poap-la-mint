@@ -110,8 +110,8 @@ export default function MugenPOAPMintPage() {
           loop
           playsInline
           onError={() => {
-            console.warn("⚠️ Failed to load background video:", backgrounds[currentBg]);
-            setIsVideo(false);
+            console.warn("⚠️ Failed to load video:", backgrounds[currentBg]);
+            setIsVideo(false); // fallback to image
           }}
           style={{
             position: "absolute",
