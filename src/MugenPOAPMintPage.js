@@ -77,7 +77,13 @@ export default function MugenPOAPMintPage() {
   };
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
+    <div style={{
+      position: "relative",
+      width: "100%",
+      height: "100vh",
+      overflow: "hidden",
+      backgroundColor: "black" // ensure no gray background
+    }}>
       {/* 🎥 Background animation */}
       <video
         key={backgrounds[currentBg]}
@@ -86,21 +92,25 @@ export default function MugenPOAPMintPage() {
         muted
         loop
         playsInline
+        onEnded={(e) => {
+          e.target.currentTime = 0;
+          e.target.play();
+        }}
         onError={() => {
           console.error("⚠️ Failed to load:", backgrounds[currentBg]);
         }}
         style={{
-		  position: "absolute",
-		  top: 0,
-		  left: 0,
-		  width: "100%",
-		  height: "100%",
-		  objectFit: "contain",
-		  backgroundColor: "black",
-		  zIndex: 0,
-		  opacity: 0.6,
-		  transition: "opacity 1s ease-in-out"
-		}}
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          backgroundColor: "black",
+          zIndex: 0,
+          opacity: 0.6,
+          transition: "opacity 1s ease-in-out"
+        }}
       />
 
       {/* 🎯 Foreground content */}
@@ -125,7 +135,7 @@ export default function MugenPOAPMintPage() {
               This POAP commemorates your presence at Mugen’s LA activation. Connect your wallet and mint below.
             </p>
 
-            {/* 👤 Show wallet status */}
+            {/* 👤 Wallet status */}
             {signer ? (
               <p style={{ marginBottom: "1rem", fontSize: "0.9rem", opacity: 0.8 }}>
                 Wallet connected ✅
@@ -147,19 +157,22 @@ export default function MugenPOAPMintPage() {
               </button>
             )}
 
-            <button
-              onClick={mintPOAP}
-              style={{
-                backgroundColor: "#e11d48",
-                color: "#fff",
-                padding: "0.75rem 1.5rem",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer"
-              }}
-            >
-              Mint POAP
-            </button>
+            {/* ✅ Only show mint if connected */}
+            {signer && (
+              <button
+                onClick={mintPOAP}
+                style={{
+                  backgroundColor: "#e11d48",
+                  color: "#fff",
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "8px",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+              >
+                Mint POAP
+              </button>
+            )}
           </>
         ) : (
           <div style={{ textAlign: "center" }}>
