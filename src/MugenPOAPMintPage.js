@@ -18,7 +18,7 @@ export default function MugenPOAPMintPage() {
 
   // 🎥 Rotate between animation backgrounds
   const backgrounds = [
-    "/backgrounds/mugen-hart-anmtn.looped.mp4"
+    "/backgrounds/mugen-hart-anmtn-looped.mp4"
   ];
   const [currentBg, setCurrentBg] = useState(0);
 
