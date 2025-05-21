@@ -16,7 +16,7 @@ export default function MugenPOAPMintPage() {
   const [imageURL, setImageURL] = useState(null);
   const [animationURL, setAnimationURL] = useState(null);
 
-  // 🎥 Rotate between 2 animation backgrounds
+  // 🎥 Rotate between animation backgrounds
   const backgrounds = [
     "/backgrounds/mugen-crest-anmtn.mp4",
     "/backgrounds/mugen-hart-anmtn.mp4"
@@ -26,7 +26,7 @@ export default function MugenPOAPMintPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBg((prev) => (prev + 1) % backgrounds.length);
-    }, 8000); // switch every 8s
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
 
@@ -81,7 +81,7 @@ export default function MugenPOAPMintPage() {
     <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
       {/* 🎥 Background animation */}
       <video
-        key={backgrounds[currentBg]} // forces reload on change
+        key={backgrounds[currentBg]}
         src={backgrounds[currentBg]}
         autoPlay
         muted
@@ -124,20 +124,29 @@ export default function MugenPOAPMintPage() {
             <p style={{ maxWidth: "600px", marginBottom: "1.5rem" }}>
               This POAP commemorates your presence at Mugen’s LA activation. Connect your wallet and mint below.
             </p>
-            <button
-              onClick={connectWallet}
-              style={{
-                backgroundColor: "#000",
-                color: "#fff",
-                padding: "0.75rem 1.5rem",
-                borderRadius: "8px",
-                marginBottom: "1rem",
-                border: "none",
-                cursor: "pointer"
-              }}
-            >
-              Connect Wallet
-            </button>
+
+            {/* 👤 Show wallet status */}
+            {signer ? (
+              <p style={{ marginBottom: "1rem", fontSize: "0.9rem", opacity: 0.8 }}>
+                Wallet connected ✅
+              </p>
+            ) : (
+              <button
+                onClick={connectWallet}
+                style={{
+                  backgroundColor: "#000",
+                  color: "#fff",
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "8px",
+                  marginBottom: "1rem",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+              >
+                Connect Wallet
+              </button>
+            )}
+
             <button
               onClick={mintPOAP}
               style={{
