@@ -104,7 +104,7 @@ export default function MugenPOAPMintPage() {
       {/* 🎥 Render video background only when needed */}
       {isVideo && (
         <video
-          src="/backgrounds/mugen-crest-anmtn.mp4"
+          src="https://www.w3schools.com/html/mov_bbb.mp4"
           autoPlay
           muted
           loop
