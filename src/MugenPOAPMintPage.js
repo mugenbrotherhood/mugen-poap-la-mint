@@ -96,7 +96,8 @@ export default function MugenPOAPMintPage() {
           left: 0,
           width: "100%",
           height: "100%",
-          objectFit: "cover",
+          objectFit: "contain",
+		  backgroundColor: "black",
           zIndex: 0,
           opacity: 0.6,
           transition: "opacity 1s ease-in-out"
