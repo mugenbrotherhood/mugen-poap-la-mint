@@ -104,7 +104,7 @@ export default function MugenPOAPMintPage() {
       {/* 🎥 Render video background only when needed */}
       {isVideo && (
         <video
-          src={backgrounds[currentBg]}
+          src="/backgrounds/mugen-crest-anmtn.mp4"
           autoPlay
           muted
           loop
@@ -123,6 +123,7 @@ export default function MugenPOAPMintPage() {
             zIndex: -1,
             opacity: 0.6
           }}
+		  onError={() => console.error("🚨 Failed to load video.")}
         />
       )}
 
