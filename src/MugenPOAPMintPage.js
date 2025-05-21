@@ -1,4 +1,3 @@
-// MugenPOAPMintPage.js
 import React, { useState } from "react";
 import { ethers } from "ethers";
 
@@ -14,6 +13,10 @@ export default function MugenPOAPMintPage() {
   const [txStatus, setTxStatus] = useState("");
   const [tokenURI, setTokenURI] = useState(null);
   const [hasMinted, setHasMinted] = useState(false);
+
+  // ✅ New: preview media
+  const [imageURL, setImageURL] = useState(null);
+  const [animationURL, setAnimationURL] = useState(null);
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -34,20 +37,26 @@ export default function MugenPOAPMintPage() {
       const tx = await contract.mint();
       await tx.wait();
 
-      // Override tokenURI with local path
       const uri = "/metadata/0.json";
       setTokenURI(uri);
       setHasMinted(true);
       setTxStatus("✅ Mint successful! Here's your POAP:");
+
+      const metadata = await fetch(uri).then(res => res.json());
+      setImageURL(metadata.image);
+      setAnimationURL(metadata.animation_url);
     } catch (err) {
       console.error("💥 Mint Error:", err);
       if (err?.reason === "Already claimed") {
         setTxStatus("⚠️ You've already minted this POAP.");
         setHasMinted(true);
 
-        // Override tokenURI with local path again
         const uri = "/metadata/0.json";
         setTokenURI(uri);
+
+        const metadata = await fetch(uri).then(res => res.json());
+        setImageURL(metadata.image);
+        setAnimationURL(metadata.animation_url);
       } else if (err?.code === "CALL_EXCEPTION") {
         setTxStatus("❌ Minting failed — check if you're in the allowed window.");
       } else {
@@ -109,21 +118,34 @@ export default function MugenPOAPMintPage() {
       ) : (
         <div style={{ textAlign: "center" }}>
           <h2>{txStatus}</h2>
-          {tokenURI && (
-            <div style={{ marginTop: "2rem" }}>
-              <iframe
-                src={tokenURI.replace(".json", ".html").replace("metadata/", "preview/")}
+          <div style={{ marginTop: "2rem" }}>
+            {animationURL ? (
+              <video
+                src={animationURL}
                 width="300"
                 height="300"
-                style={{ border: "none", borderRadius: "16px" }}
-                title="POAP Preview"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{ borderRadius: "16px" }}
               />
-              <p>
-                <a href={tokenURI} target="_blank" rel="noopener noreferrer" style={{ color: "#93c5fd" }}>
-                  View Metadata
-                </a>
-              </p>
-            </div>
+            ) : (
+              imageURL && (
+                <img
+                  src={imageURL}
+                  alt="Mugen POAP"
+                  style={{ width: "300px", borderRadius: "16px" }}
+                />
+              )
+            )}
+          </div>
+          {tokenURI && (
+            <p style={{ marginTop: "1rem" }}>
+              <a href={tokenURI} target="_blank" rel="noopener noreferrer" style={{ color: "#93c5fd" }}>
+                View Metadata
+              </a>
+            </p>
           )}
         </div>
       )}
