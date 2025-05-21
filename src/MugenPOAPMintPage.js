@@ -16,6 +16,20 @@ export default function MugenPOAPMintPage() {
   const [imageURL, setImageURL] = useState(null);
   const [animationURL, setAnimationURL] = useState(null);
 
+  // 🎥 Rotate between 2 animation backgrounds
+  const backgrounds = [
+    "/backgrounds/mugen-crest-anmtn.mp4",
+    "/backgrounds/mugen-hart-anmtn.mp4"
+  ];
+  const [currentBg, setCurrentBg] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % backgrounds.length);
+    }, 8000); // switch every 8s
+    return () => clearInterval(interval);
+  }, []);
+
   const connectWallet = async () => {
     if (window.ethereum) {
       const _provider = new ethers.BrowserProvider(window.ethereum);
@@ -65,14 +79,17 @@ export default function MugenPOAPMintPage() {
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
-      {/* ✅ Background video (known-good test source) */}
+      {/* 🎥 Background animation */}
       <video
-        src="/backgrounds/mugen-crest-anmtn.mp4"
+        key={backgrounds[currentBg]} // forces reload on change
+        src={backgrounds[currentBg]}
         autoPlay
         muted
         loop
         playsInline
-        onError={() => console.error("🚨 Failed to load test video.")}
+        onError={() => {
+          console.error("⚠️ Failed to load:", backgrounds[currentBg]);
+        }}
         style={{
           position: "absolute",
           top: 0,
@@ -81,11 +98,12 @@ export default function MugenPOAPMintPage() {
           height: "100%",
           objectFit: "cover",
           zIndex: 0,
-          opacity: 0.6
+          opacity: 0.6,
+          transition: "opacity 1s ease-in-out"
         }}
       />
 
-      {/* ✅ Foreground minting UI */}
+      {/* 🎯 Foreground content */}
       <div
         style={{
           position: "relative",
