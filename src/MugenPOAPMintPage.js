@@ -67,7 +67,7 @@ export default function MugenPOAPMintPage() {
     <div style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden" }}>
       {/* ✅ Background video (known-good test source) */}
       <video
-        src="https://www.w3schools.com/html/mov_bbb.mp4"
+        src="/backgrounds/mugen-crest-anmtn.mp4"
         autoPlay
         muted
         loop
