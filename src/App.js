@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import MugenPOAPMintPage from "./components/MugenPOAPMintPage";
 import OrganizerDashboard from "./components/OrganizerDashboard";
+import './App.css';
+import './index.css';
 import './styles/qr-styles.css';
 
 function App() {
