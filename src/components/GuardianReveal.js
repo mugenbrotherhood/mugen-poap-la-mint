@@ -1,6 +1,6 @@
 // src/GuardianReveal.js
 import React from "react";
-import "./App.css"; // Ensure styles for .pillar, .overlay, etc. are here
+import "../App.css"; // Ensure styles for .pillar, .overlay, etc. are here
 
 const characters = [
   { id: 1, name: "Pillar 1", image: "/pillars/pillar_1.png" },
