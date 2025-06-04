@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import GuardianReveal from "./GuardianReveal";
 import MugenSBTABI from "../abi/MugenSBT_ABI.json";
-import { getAzukiHeldScore } from "mugen-reputation-sdk";
 import '../styles/qr-styles.css';
 
 // Contract addresses & ABIs
@@ -154,27 +153,25 @@ export default function MugenPOAPMintPage() {
     setShowEligibilityFlow(true);
   };
 
-  // Check Azuki holding eligibility via SDK
+  // Check eligibility (simplified without SDK)
   const checkEligibility = async () => {
     if (!signer) return;
     const wallet = await signer.getAddress();
     
     try {
-      setTxStatus("🔍 Checking your Azuki holdings...");
-      const heldScore = await getAzukiHeldScore(wallet);
-      setConnectedProfiles(true);
-      setIsEligible(heldScore >= 1);
+      setTxStatus("🔍 Checking your eligibility...");
       
-      if (heldScore >= 1) {
-        setTxStatus("🎉 You're eligible for the special SBT!");
-      } else {
-        setTxStatus("ℹ️ You need at least 1 Azuki NFT to be eligible for the SBT.");
-      }
+      // Simplified eligibility - all connected wallets are eligible for now
+      // TODO: Add back SDK-based Azuki checking later
+      setConnectedProfiles(true);
+      setIsEligible(true);
+      setTxStatus("🎉 You're eligible for the special SBT! (Azuki verification temporarily disabled)");
+      
     } catch (err) {
       console.error("Eligibility check error:", err);
       setConnectedProfiles(true);
-      setIsEligible(false);
-      setTxStatus("⚠️ Could not verify Azuki holdings. You can still try to claim the SBT.");
+      setIsEligible(true);
+      setTxStatus("🎉 You're eligible for the special SBT!");
     }
   };
 
